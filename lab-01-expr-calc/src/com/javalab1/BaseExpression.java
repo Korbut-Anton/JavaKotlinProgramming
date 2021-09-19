@@ -14,8 +14,8 @@ public abstract class BaseExpression implements Expression {
       case NUMBER -> mRight = new LiteralImpl(pair.getFirst(), this);
       case VARIABLE -> mRight = new VariableImpl(pair.getFirst(), this);
       case BINARY_OPERATION -> mRight = new BinaryExpressionImpl(pair.getFirst().charAt(0), this);
-      case OPENING_BRACKET -> mRight = new ParenthesisExpressionImpl(this);
-      default -> throw new Exception("Can not create right child");
+      case OPENING_BRACKET -> mRight = new ParenthesisExpressionImpl(pair.getFirst(), this);
+      default -> throw new Exception("Wrong token to create right child");
     }
     return mRight;
   }
@@ -29,8 +29,8 @@ public abstract class BaseExpression implements Expression {
       case NUMBER -> mLeft = new LiteralImpl(pair.getFirst(), this);
       case VARIABLE -> mLeft = new VariableImpl(pair.getFirst(), this);
       case BINARY_OPERATION -> mLeft = new BinaryExpressionImpl(pair.getFirst().charAt(0), this);
-      case OPENING_BRACKET -> mLeft = new ParenthesisExpressionImpl(this);
-      default -> throw new Exception("Can not create left child");
+      case OPENING_BRACKET -> mLeft = new ParenthesisExpressionImpl(pair.getFirst(), this);
+      default -> throw new Exception("Wring token to create left child");
     }
     return mLeft;
   }

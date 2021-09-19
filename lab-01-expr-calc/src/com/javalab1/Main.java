@@ -16,6 +16,7 @@ public class Main {
     HashMap<String, Double> mapForVariables = (HashMap<String, Double>)
             expression.accept(new SetValuesForVariablesExpressionVisitor());
     System.out.print("Result: ");
-    System.out.println(expression.accept(new ComputeExpressionVisitor(mapForVariables)));
+    System.out.print(String.format("%8.7f", expression.
+            accept(new ComputeExpressionVisitor(mapForVariables))).replace(',', '.'));
   }
 }

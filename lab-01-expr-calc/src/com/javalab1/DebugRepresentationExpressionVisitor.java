@@ -21,8 +21,8 @@ public class DebugRepresentationExpressionVisitor implements ExpressionVisitor {
 
   @Override
   public Object visitParenthesis(ParenthesisExpression expr) {
-    return new StringBuilder("paren-expr(").append(expr.getExpr().accept(this)).
-            append(")");
+    return new StringBuilder(expr.hasMinus() ? "-" : "").append("paren-expr(").
+            append(expr.getExpr().accept(this)).append(")");
   }
 
   @Override

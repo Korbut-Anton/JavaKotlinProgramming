@@ -22,6 +22,9 @@ public class ComputeExpressionVisitor implements ExpressionVisitor {
 
   @Override
   public Object visitParenthesis(ParenthesisExpression expr) {
+    if (expr.hasMinus()) {
+      return -(double) expr.getExpr().accept(this);
+    }
     return expr.getExpr().accept(this);
   }
 

@@ -20,11 +20,12 @@ public class ToStringExpressionVisitor implements ExpressionVisitor {
 
   @Override
   public Object visitParenthesis(ParenthesisExpression expr) {
-    return new StringBuilder("(").append(expr.getExpr().accept(this)).append(")");
+    return new StringBuilder(expr.hasMinus() ? "-" : "").append("(").
+            append(expr.getExpr().accept(this)).append(")");
   }
 
   @Override
   public Object visitVariable(Variable expr) {
-    return new StringBuilder(expr.hasMinus() ? "-" + expr.getName() : String.valueOf(expr.getName()));
+    return new StringBuilder(expr.hasMinus() ? "-" : "").append(expr.getName());
   }
 }

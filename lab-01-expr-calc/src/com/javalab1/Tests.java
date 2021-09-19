@@ -34,24 +34,29 @@ public class Tests {
     Expression expr12 = parser.parseExpression(str12);
     String str13 = "1.0+(2.0+3.0+4.0)+5.0+6.0+7.0*(5.3-4.21902)";
     Expression expr13 = parser.parseExpression(str13);
-
-    String str14 = "x";
+    String str14 = "-(-9.11)";
     Expression expr14 = parser.parseExpression(str14);
-    String str15 = "-y";
+    String str15 = "x";
     Expression expr15 = parser.parseExpression(str15);
-    String str16 = "(-a)+(-a)-r";
+    String str16 = "-y";
     Expression expr16 = parser.parseExpression(str16);
-    String str17 = "+s-(5.8+(+q))/s-m";
+    String str17 = "(-a)+(-a)-r";
     Expression expr17 = parser.parseExpression(str17);
+    String str18 = "+s-(5.8+(+q))/s-m";
+    Expression expr18 = parser.parseExpression(str18);
+    String str19 = "+((x+y)+5.2)/(-(x*2.0)-(+(-w*w*w)))";
+    Expression expr19 = parser.parseExpression(str19);
 
-    assert (expr1.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().equals("'5.0'"));
+    assert (expr1.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
+            equals("'5.0'"));
     assert (expr2.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
             equals("'-7.11'"));
     assert (expr3.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
             equals("paren-expr('9.999')"));
     assert (expr4.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
             equals("paren-expr('-1.32')"));
-    assert (expr5.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().equals("'8.1'"));
+    assert (expr5.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
+            equals("'8.1'"));
     assert (expr6.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
             equals("paren-expr('19.0')"));
     assert (expr7.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
@@ -70,14 +75,20 @@ public class Tests {
             equals("add(add(add(add('1.0',paren-expr(add(add('2.0','3.0'),'4.0'))),'5.0'),'6.0')" +
                     ",mul('7.0',paren-expr(sub('5.3','4.21902'))))"));
     assert (expr14.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
-            equals("var[x]"));
+            equals("-paren-expr('-9.11')"));
     assert (expr15.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
-            equals("-var[y]"));
+            equals("var[x]"));
     assert (expr16.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
-            equals("sub(add(paren-expr(-var[a]),paren-expr(-var[a])),var[r])"));
+            equals("-var[y]"));
     assert (expr17.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
+            equals("sub(add(paren-expr(-var[a]),paren-expr(-var[a])),var[r])"));
+    assert (expr18.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
             equals("sub(sub(var[s],div(paren-expr(add('5.8',paren-expr(var[q]))),var[s]))," +
                     "var[m])"));
+    assert (expr19.accept(DebugRepresentationExpressionVisitor.INSTANCE).toString().
+            equals("div(paren-expr(add(paren-expr(add(var[x],var[y])),'5.2'))," +
+                    "paren-expr(sub(-paren-expr(mul(var[x],'2.0'))," +
+                    "paren-expr(paren-expr(mul(mul(-var[w],var[w]),var[w]))))))"));
 
     assert ((int) expr1.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 1);
     assert ((int) expr2.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 1);
@@ -92,10 +103,12 @@ public class Tests {
     assert ((int) expr11.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 4);
     assert ((int) expr12.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 6);
     assert ((int) expr13.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 8);
-    assert ((int) expr14.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 1);
+    assert ((int) expr14.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 2);
     assert ((int) expr15.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 1);
-    assert ((int) expr16.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 4);
-    assert ((int) expr17.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 7);
+    assert ((int) expr16.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 1);
+    assert ((int) expr17.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 4);
+    assert ((int) expr18.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 7);
+    assert ((int) expr19.accept(ComputeTreeHeightExpressionVisitor.INSTANCE) == 8);
 
     assert (expr1.accept(ToStringExpressionVisitor.INSTANCE).toString().equals(str1));
     assert (expr2.accept(ToStringExpressionVisitor.INSTANCE).toString().equals(str2));
@@ -114,7 +127,11 @@ public class Tests {
     assert (expr14.accept(ToStringExpressionVisitor.INSTANCE).toString().equals(str14));
     assert (expr15.accept(ToStringExpressionVisitor.INSTANCE).toString().equals(str15));
     assert (expr16.accept(ToStringExpressionVisitor.INSTANCE).toString().equals(str16));
-    assert (expr17.accept(ToStringExpressionVisitor.INSTANCE).toString().equals("s-(5.8+(q))/s-m"));
+    assert (expr17.accept(ToStringExpressionVisitor.INSTANCE).toString().equals(str17));
+    assert (expr18.accept(ToStringExpressionVisitor.INSTANCE).toString().
+            equals("s-(5.8+(q))/s-m"));
+    assert (expr19.accept(ToStringExpressionVisitor.INSTANCE).toString().
+            equals("((x+y)+5.2)/(-(x*2.0)-((-w*w*w)))"));
 
     assert (Math.abs((double) expr1.accept(new ComputeExpressionVisitor(hashMap)) - 5.0)
             <= eps);
@@ -142,35 +159,47 @@ public class Tests {
             <= eps);
     assert (Math.abs((double) expr13.accept(new ComputeExpressionVisitor(hashMap)) - 28.56686)
             <= eps);
+    assert (Math.abs((double) expr14.accept(new ComputeExpressionVisitor(hashMap)) - 9.11)
+            <= eps);
     hashMap.put("x", 8.0);
-    assert (Math.abs((double) expr14.accept(new ComputeExpressionVisitor(hashMap)) - 8.0)
+    assert (Math.abs((double) expr15.accept(new ComputeExpressionVisitor(hashMap)) - 8.0)
             <= eps);
     hashMap.put("x", 0.0);
-    assert (Math.abs((double) expr14.accept(new ComputeExpressionVisitor(hashMap)) - 0.0)
+    assert (Math.abs((double) expr15.accept(new ComputeExpressionVisitor(hashMap)) - 0.0)
             <= eps);
     hashMap.put("y", -88.018);
-    assert (Math.abs((double) expr15.accept(new ComputeExpressionVisitor(hashMap)) - 88.018)
+    assert (Math.abs((double) expr16.accept(new ComputeExpressionVisitor(hashMap)) - 88.018)
             <= eps);
     hashMap.put("y", 53.91);
-    assert (Math.abs((double) expr15.accept(new ComputeExpressionVisitor(hashMap)) - -53.91)
+    assert (Math.abs((double) expr16.accept(new ComputeExpressionVisitor(hashMap)) - -53.91)
             <= eps);
     hashMap.put("a", -9.0);
     hashMap.put("r", 13.1);
-    assert (Math.abs((double) expr16.accept(new ComputeExpressionVisitor(hashMap)) - 4.9)
+    assert (Math.abs((double) expr17.accept(new ComputeExpressionVisitor(hashMap)) - 4.9)
             <= eps);
     hashMap.put("a", 68.223);
     hashMap.put("r", -200.8);
-    assert (Math.abs((double) expr16.accept(new ComputeExpressionVisitor(hashMap)) - 64.354)
+    assert (Math.abs((double) expr17.accept(new ComputeExpressionVisitor(hashMap)) - 64.354)
             <= eps);
     hashMap.put("s", -1.0);
     hashMap.put("q", 0.77);
     hashMap.put("m", 308.0);
-    assert (Math.abs((double) expr17.accept(new ComputeExpressionVisitor(hashMap)) - -302.43)
+    assert (Math.abs((double) expr18.accept(new ComputeExpressionVisitor(hashMap)) - -302.43)
             <= eps);
     hashMap.put("s", -19.84);
     hashMap.put("q", 30.03);
     hashMap.put("m", -10.0);
-    assert (Math.abs((double) expr17.accept(new ComputeExpressionVisitor(hashMap)) - -8.0340524)
+    assert (Math.abs((double) expr18.accept(new ComputeExpressionVisitor(hashMap)) - -8.0340524)
+            <= eps);
+    hashMap.put("x", 205.0);
+    hashMap.put("y", 9.54354);
+    hashMap.put("w", -0.03);
+    assert (Math.abs((double) expr19.accept(new ComputeExpressionVisitor(hashMap)) - -0.5359598889)
+            <= eps);
+    hashMap.put("x", 1.0);
+    hashMap.put("y", 0.0);
+    hashMap.put("w", 1.0);
+    assert (Math.abs((double) expr19.accept(new ComputeExpressionVisitor(hashMap)) - -6.2)
             <= eps);
   }
 }

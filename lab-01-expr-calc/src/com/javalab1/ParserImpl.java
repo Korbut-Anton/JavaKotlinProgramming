@@ -94,11 +94,17 @@ public class ParserImpl implements Parser {
                 IsVariable(prevSymbol) || (prevSymbol == ')')) {
           throw new ExpressionParseException("Invalid order of symbols");
         }
-        result.add(createPair(String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
+        if (isUnaryOperation) {
+          result.add(createPair(prevSymbol + String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
+          isUnaryOperation = false;
+        } else {
+          result.add(createPair(String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
+        }
         diffBetweenAmountsOfBrackets++;
       } else if (curSymbol == ')') {
         switch (prevSymbol) {
-          case '.', '*', '/', '+', '-' -> throw new ExpressionParseException("Invalid order of symbols");
+          case '.', '*', '/', '+', '-' -> throw new
+                  ExpressionParseException("Invalid order of symbols");
           case '(' -> throw new ExpressionParseException("Empty brackets");
           default -> {
             result.add(createPair(String.valueOf(curSymbol), Lexeme.CLOSING_BRACKET));
@@ -183,7 +189,7 @@ public class ParserImpl implements Parser {
   }
 
   private Expression MakeTree(ArrayList<Pair<String, Lexeme>> inputList) throws Exception {
-    ParenthesisExpressionImpl starter = new ParenthesisExpressionImpl(null);
+    ParenthesisExpressionImpl starter = new ParenthesisExpressionImpl("", null);
     BaseExpression curExpr = starter;
     for (int i = inputList.size() - 1; i >= 0; i--) {
       BaseExpression newExpr;

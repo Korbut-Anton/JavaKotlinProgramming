@@ -2,14 +2,17 @@ package com.javalab1;
 
 public class VariableImpl extends BaseExpression implements Variable {
   private final String mName;
-  private boolean hasMinus = false;
+  private final boolean hasMinus;
 
   public VariableImpl(String inputString, BaseExpression parent) {
     mParent = parent;
-    if (inputString.charAt(0) == '-') {
-      hasMinus = true;
+    if (!inputString.isEmpty()) {
+      hasMinus = inputString.charAt(0) == '-';
+      mName = String.valueOf(inputString.charAt(inputString.length() - 1));
+    } else {
+      hasMinus = false;
+      mName = "";
     }
-    mName = String.valueOf(inputString.charAt(inputString.length() - 1));
   }
 
   @Override
