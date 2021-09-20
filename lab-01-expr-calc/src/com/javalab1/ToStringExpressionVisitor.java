@@ -8,9 +8,8 @@ public class ToStringExpressionVisitor implements ExpressionVisitor {
 
   @Override
   public Object visitBinaryExpression(BinaryExpression expr) {
-    return new StringBuilder(expr.getLeft().accept(this).toString()).
-            append(expr.getOperation().getSymbolOfOperation()).
-            append(expr.getRight().accept(this));
+    return expr.getLeft().accept(this).toString() + expr.getOperation().getSymbolOfOperation() +
+            expr.getRight().accept(this);
   }
 
   @Override
@@ -20,12 +19,11 @@ public class ToStringExpressionVisitor implements ExpressionVisitor {
 
   @Override
   public Object visitParenthesis(ParenthesisExpression expr) {
-    return new StringBuilder(expr.hasMinus() ? "-" : "").append("(").
-            append(expr.getExpr().accept(this)).append(")");
+    return (expr.hasMinus() ? "-" : "") + "(" + expr.getExpr().accept(this) + ")";
   }
 
   @Override
   public Object visitVariable(Variable expr) {
-    return new StringBuilder(expr.hasMinus() ? "-" : "").append(expr.getName());
+    return (expr.hasMinus() ? "-" : "") + expr.getName();
   }
 }

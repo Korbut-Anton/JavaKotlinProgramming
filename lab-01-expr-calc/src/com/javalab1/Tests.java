@@ -5,9 +5,14 @@ import java.util.HashMap;
 public class Tests {
   public static final double eps = 1e-7;
 
-  public static void main(String[] args) throws Exception {
+  public static boolean doubleValuesAreEqual(double first, double second, double eps) {
+    return Math.abs(first - second) <= eps;
+  }
+
+  public static void main(String[] args)
+          throws ExpressionParseException, ExpressionCreationException {
     ParserImpl parser = new ParserImpl();
-    HashMap<String, Double> hashMap = new HashMap<>();
+    HashMap<String, Double> ValuesOfVariables = new HashMap<>();
     String str1 = "5.0";
     Expression expr1 = parser.parseExpression(str1);
     String str2 = "-7.11";
@@ -133,73 +138,73 @@ public class Tests {
     assert (expr19.accept(ToStringExpressionVisitor.INSTANCE).toString().
             equals("((x+y)+5.2)/(-(x*2.0)-((-w*w*w)))"));
 
-    assert (Math.abs((double) expr1.accept(new ComputeExpressionVisitor(hashMap)) - 5.0)
-            <= eps);
-    assert (Math.abs((double) expr2.accept(new ComputeExpressionVisitor(hashMap)) - -7.11)
-            <= eps);
-    assert (Math.abs((double) expr3.accept(new ComputeExpressionVisitor(hashMap)) - 9.999)
-            <= eps);
-    assert (Math.abs((double) expr4.accept(new ComputeExpressionVisitor(hashMap)) - -1.32)
-            <= eps);
-    assert (Math.abs((double) expr5.accept(new ComputeExpressionVisitor(hashMap)) - 8.1)
-            <= eps);
-    assert (Math.abs((double) expr6.accept(new ComputeExpressionVisitor(hashMap)) - 19.0)
-            <= eps);
-    assert (Math.abs((double) expr7.accept(new ComputeExpressionVisitor(hashMap)) - -1019.005)
-            <= eps);
-    assert (Math.abs((double) expr8.accept(new ComputeExpressionVisitor(hashMap)) - 1.23)
-            <= eps);
-    assert (Math.abs((double) expr9.accept(new ComputeExpressionVisitor(hashMap)) - 12.0)
-            <= eps);
-    assert (Math.abs((double) expr10.accept(new ComputeExpressionVisitor(hashMap)) - -10.99)
-            <= eps);
-    assert (Math.abs((double) expr11.accept(new ComputeExpressionVisitor(hashMap)) - 0.4)
-            <= eps);
-    assert (Math.abs((double) expr12.accept(new ComputeExpressionVisitor(hashMap)) - -2.0)
-            <= eps);
-    assert (Math.abs((double) expr13.accept(new ComputeExpressionVisitor(hashMap)) - 28.56686)
-            <= eps);
-    assert (Math.abs((double) expr14.accept(new ComputeExpressionVisitor(hashMap)) - 9.11)
-            <= eps);
-    hashMap.put("x", 8.0);
-    assert (Math.abs((double) expr15.accept(new ComputeExpressionVisitor(hashMap)) - 8.0)
-            <= eps);
-    hashMap.put("x", 0.0);
-    assert (Math.abs((double) expr15.accept(new ComputeExpressionVisitor(hashMap)) - 0.0)
-            <= eps);
-    hashMap.put("y", -88.018);
-    assert (Math.abs((double) expr16.accept(new ComputeExpressionVisitor(hashMap)) - 88.018)
-            <= eps);
-    hashMap.put("y", 53.91);
-    assert (Math.abs((double) expr16.accept(new ComputeExpressionVisitor(hashMap)) - -53.91)
-            <= eps);
-    hashMap.put("a", -9.0);
-    hashMap.put("r", 13.1);
-    assert (Math.abs((double) expr17.accept(new ComputeExpressionVisitor(hashMap)) - 4.9)
-            <= eps);
-    hashMap.put("a", 68.223);
-    hashMap.put("r", -200.8);
-    assert (Math.abs((double) expr17.accept(new ComputeExpressionVisitor(hashMap)) - 64.354)
-            <= eps);
-    hashMap.put("s", -1.0);
-    hashMap.put("q", 0.77);
-    hashMap.put("m", 308.0);
-    assert (Math.abs((double) expr18.accept(new ComputeExpressionVisitor(hashMap)) - -302.43)
-            <= eps);
-    hashMap.put("s", -19.84);
-    hashMap.put("q", 30.03);
-    hashMap.put("m", -10.0);
-    assert (Math.abs((double) expr18.accept(new ComputeExpressionVisitor(hashMap)) - -8.0340524)
-            <= eps);
-    hashMap.put("x", 205.0);
-    hashMap.put("y", 9.54354);
-    hashMap.put("w", -0.03);
-    assert (Math.abs((double) expr19.accept(new ComputeExpressionVisitor(hashMap)) - -0.5359598889)
-            <= eps);
-    hashMap.put("x", 1.0);
-    hashMap.put("y", 0.0);
-    hashMap.put("w", 1.0);
-    assert (Math.abs((double) expr19.accept(new ComputeExpressionVisitor(hashMap)) - -6.2)
-            <= eps);
+    assert (doubleValuesAreEqual((double)
+            expr1.accept(new ComputeExpressionVisitor(ValuesOfVariables)), 5.0, eps));
+    assert (doubleValuesAreEqual((double) expr2.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -7.11, eps));
+    assert (doubleValuesAreEqual((double) expr3.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 9.999, eps));
+    assert (doubleValuesAreEqual((double) expr4.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -1.32, eps));
+    assert (doubleValuesAreEqual((double) expr5.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 8.1, eps));
+    assert (doubleValuesAreEqual((double) expr6.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 19.0, eps));
+    assert (doubleValuesAreEqual((double) expr7.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -1019.005, eps));
+    assert (doubleValuesAreEqual((double) expr8.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 1.23, eps));
+    assert (doubleValuesAreEqual((double) expr9.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 12.0, eps));
+    assert (doubleValuesAreEqual((double) expr10.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -10.99, eps));
+    assert (doubleValuesAreEqual((double) expr11.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 0.4, eps));
+    assert (doubleValuesAreEqual((double) expr12.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -2.0, eps));
+    assert (doubleValuesAreEqual((double) expr13.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 28.56686, eps));
+    assert (doubleValuesAreEqual((double) expr14.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 9.11, eps));
+    ValuesOfVariables.put("x", 8.0);
+    assert (doubleValuesAreEqual((double) expr15.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 8.0, eps));
+    ValuesOfVariables.put("x", 0.0);
+    assert (doubleValuesAreEqual((double) expr15.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 0.0, eps));
+    ValuesOfVariables.put("y", -88.018);
+    assert (doubleValuesAreEqual((double) expr16.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 88.018, eps));
+    ValuesOfVariables.put("y", 53.91);
+    assert (doubleValuesAreEqual((double) expr16.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -53.91, eps));
+    ValuesOfVariables.put("a", -9.0);
+    ValuesOfVariables.put("r", 13.1);
+    assert (doubleValuesAreEqual((double) expr17.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 4.9, eps));
+    ValuesOfVariables.put("a", 68.223);
+    ValuesOfVariables.put("r", -200.8);
+    assert (doubleValuesAreEqual((double) expr17.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), 64.354, eps));
+    ValuesOfVariables.put("s", -1.0);
+    ValuesOfVariables.put("q", 0.77);
+    ValuesOfVariables.put("m", 308.0);
+    assert (doubleValuesAreEqual((double) expr18.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -302.43, eps));
+    ValuesOfVariables.put("s", -19.84);
+    ValuesOfVariables.put("q", 30.03);
+    ValuesOfVariables.put("m", -10.0);
+    assert (doubleValuesAreEqual((double) expr18.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -8.0340524, eps));
+    ValuesOfVariables.put("x", 205.0);
+    ValuesOfVariables.put("y", 9.54354);
+    ValuesOfVariables.put("w", -0.03);
+    assert (doubleValuesAreEqual((double) expr19.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -0.5359598889, eps));
+    ValuesOfVariables.put("x", 1.0);
+    ValuesOfVariables.put("y", 0.0);
+    ValuesOfVariables.put("w", 1.0);
+    assert (doubleValuesAreEqual((double) expr19.
+            accept(new ComputeExpressionVisitor(ValuesOfVariables)), -6.2, eps));
   }
 }

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args)
+          throws ExpressionCreationException, ExpressionParseException {
     ParserImpl parser = new ParserImpl();
     System.out.println("Enter expression: ");
     Scanner scanner = new Scanner(System.in);

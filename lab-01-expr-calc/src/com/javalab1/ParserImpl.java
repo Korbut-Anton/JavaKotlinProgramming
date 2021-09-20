@@ -3,8 +3,6 @@ package com.javalab1;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import static com.javalab1.Pair.createPair;
-
 public class ParserImpl implements Parser {
   enum Lexeme {
     NUMBER,
@@ -14,11 +12,11 @@ public class ParserImpl implements Parser {
     CLOSING_BRACKET,
   }
 
-  private boolean IsVariable(char symbol) {
+  private boolean isVariable(char symbol) {
     return (symbol >= 'a') && (symbol <= 'z');
   }
 
-  private boolean IsDigit(char symbol) {
+  private boolean isDigit(char symbol) {
     return (symbol >= '0') && (symbol <= '9');
   }
 
@@ -38,12 +36,12 @@ public class ParserImpl implements Parser {
 
     if ((curSymbol == '-') || (curSymbol == '+')) {
       isUnaryOperation = true;
-    } else if (IsDigit(curSymbol)) {
+    } else if (isDigit(curSymbol)) {
       curNumb.append(curSymbol);
-    } else if (IsVariable(curSymbol)) {
-      result.add(createPair(String.valueOf(curSymbol), Lexeme.VARIABLE));
+    } else if (isVariable(curSymbol)) {
+      result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.VARIABLE));
     } else if (curSymbol == '(') {
-      result.add(createPair(String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
+      result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
       diffBetweenAmountsOfBrackets++;
     } else if (".*/)".contains(String.valueOf(curSymbol))) {
       throw new ExpressionParseException("Invalid order of symbols");
@@ -51,8 +49,8 @@ public class ParserImpl implements Parser {
       throw new ExpressionParseException("Invalid symbol");
     }
     if (inputString.length() == 1) {
-      if (IsDigit(curSymbol)) {
-        result.add(createPair(curNumb.toString(), Lexeme.NUMBER));
+      if (isDigit(curSymbol)) {
+        result.add(new Pair<>(curNumb.toString(), Lexeme.NUMBER));
         return result;
       }
     }
@@ -60,19 +58,19 @@ public class ParserImpl implements Parser {
 
     for (int i = 1; i < inputString.length(); i++) {
       curSymbol = inputString.charAt(i);
-      if (!IsDigit(curSymbol) && (curSymbol != '.') && IsDigit(prevSymbol)) {
-        result.add(createPair(curNumb.toString(), Lexeme.NUMBER));
+      if (!isDigit(curSymbol) && (curSymbol != '.') && isDigit(prevSymbol)) {
+        result.add(new Pair<>(curNumb.toString(), Lexeme.NUMBER));
         curNumb.delete(0, curNumb.length());
         curNumbPointState = false;
       }
 
       if (curSymbol == '*' || curSymbol == '/') {
-        if (!IsDigit(prevSymbol) && !IsVariable(prevSymbol) && (prevSymbol != ')')) {
+        if (!isDigit(prevSymbol) && !isVariable(prevSymbol) && (prevSymbol != ')')) {
           throw new ExpressionParseException("Invalid order of symbols");
         }
-        result.add(createPair(String.valueOf(curSymbol), Lexeme.BINARY_OPERATION));
-      } else if (IsDigit(curSymbol)) {
-        if (IsVariable(prevSymbol) || (prevSymbol == ')')) {
+        result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.BINARY_OPERATION));
+      } else if (isDigit(curSymbol)) {
+        if (isVariable(prevSymbol) || (prevSymbol == ')')) {
           throw new ExpressionParseException("Invalid order of symbols");
         }
         if (isUnaryOperation) {
@@ -81,7 +79,7 @@ public class ParserImpl implements Parser {
         }
         curNumb.append(curSymbol);
       } else if (curSymbol == '.') {
-        if (!IsDigit(prevSymbol)) {
+        if (!isDigit(prevSymbol)) {
           throw new ExpressionParseException("Invalid order of symbols");
         }
         if (curNumbPointState) {
@@ -90,15 +88,15 @@ public class ParserImpl implements Parser {
         curNumbPointState = true;
         curNumb.append(curSymbol);
       } else if (curSymbol == '(') {
-        if ((prevSymbol == '.') || IsDigit(prevSymbol) ||
-                IsVariable(prevSymbol) || (prevSymbol == ')')) {
+        if ((prevSymbol == '.') || isDigit(prevSymbol) ||
+                isVariable(prevSymbol) || (prevSymbol == ')')) {
           throw new ExpressionParseException("Invalid order of symbols");
         }
         if (isUnaryOperation) {
-          result.add(createPair(prevSymbol + String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
+          result.add(new Pair<>(prevSymbol + String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
           isUnaryOperation = false;
         } else {
-          result.add(createPair(String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
+          result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.OPENING_BRACKET));
         }
         diffBetweenAmountsOfBrackets++;
       } else if (curSymbol == ')') {
@@ -107,28 +105,28 @@ public class ParserImpl implements Parser {
                   ExpressionParseException("Invalid order of symbols");
           case '(' -> throw new ExpressionParseException("Empty brackets");
           default -> {
-            result.add(createPair(String.valueOf(curSymbol), Lexeme.CLOSING_BRACKET));
+            result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.CLOSING_BRACKET));
             diffBetweenAmountsOfBrackets--;
           }
         }
-      } else if (IsVariable(curSymbol)) {
-        if (IsVariable(prevSymbol) || IsDigit(prevSymbol) || (prevSymbol == '.') ||
+      } else if (isVariable(curSymbol)) {
+        if (isVariable(prevSymbol) || isDigit(prevSymbol) || (prevSymbol == '.') ||
                 (prevSymbol == ')')) {
           throw new ExpressionParseException("Invalid order of symbols");
         }
         if (isUnaryOperation) {
-          result.add(createPair(prevSymbol + String.valueOf(curSymbol),
+          result.add(new Pair<>(prevSymbol + String.valueOf(curSymbol),
                   Lexeme.VARIABLE));
           isUnaryOperation = false;
         } else {
-          result.add(createPair(String.valueOf(curSymbol), Lexeme.VARIABLE));
+          result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.VARIABLE));
         }
       } else if ((curSymbol == '+') || (curSymbol == '-')) {
         if (prevSymbol == '(') {
           isUnaryOperation = true;
-        } else if (IsDigit(prevSymbol) || IsVariable(prevSymbol) ||
+        } else if (isDigit(prevSymbol) || isVariable(prevSymbol) ||
                 (prevSymbol == ')')) {
-          result.add(createPair(String.valueOf(curSymbol), Lexeme.BINARY_OPERATION));
+          result.add(new Pair<>(String.valueOf(curSymbol), Lexeme.BINARY_OPERATION));
         } else {
           throw new ExpressionParseException("Invalid order of symbols");
         }
@@ -138,9 +136,9 @@ public class ParserImpl implements Parser {
       prevSymbol = curSymbol;
     }
 
-    if (IsDigit(curSymbol)) {
-      result.add(createPair(curNumb.toString(), Lexeme.NUMBER));
-    } else if (!IsVariable(curSymbol) && (curSymbol != ')')) {
+    if (isDigit(curSymbol)) {
+      result.add(new Pair<>(curNumb.toString(), Lexeme.NUMBER));
+    } else if (!isVariable(curSymbol) && (curSymbol != ')')) {
       throw new ExpressionParseException("Invalid last symbol");
     }
     if (diffBetweenAmountsOfBrackets != 0) {
@@ -188,7 +186,8 @@ public class ParserImpl implements Parser {
     inputList.subList(j, inputList.size()).clear();
   }
 
-  private Expression MakeTree(ArrayList<Pair<String, Lexeme>> inputList) throws Exception {
+  private Expression makeTree(ArrayList<Pair<String, Lexeme>> inputList)
+          throws ExpressionCreationException {
     ParenthesisExpressionImpl starter = new ParenthesisExpressionImpl("", null);
     BaseExpression curExpr = starter;
     for (int i = inputList.size() - 1; i >= 0; i--) {
@@ -210,9 +209,10 @@ public class ParserImpl implements Parser {
   }
 
   @Override
-  public Expression parseExpression(String input) throws Exception {
+  public Expression parseExpression(String input)
+          throws ExpressionParseException, ExpressionCreationException {
     ArrayList<Pair<String, Lexeme>> resultList = divideToTokens(input);
     convertToReversePolishNotation(resultList);
-    return MakeTree(resultList);
+    return makeTree(resultList);
   }
 }

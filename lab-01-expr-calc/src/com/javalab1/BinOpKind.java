@@ -1,80 +1,48 @@
 package com.javalab1;
 
 public enum BinOpKind {
-  ADDITION {
+  ADDITION("add", "+") {
     @Override
     double performOperation(double first, double second) {
       return first + second;
     }
-
-    @Override
-    String getShortNameOfOperation() {
-      return "add";
-    }
-
-    @Override
-    String getSymbolOfOperation() {
-      return "+";
-    }
   },
-  DIFFERENCE {
+  DIFFERENCE("sub", "-") {
     @Override
     double performOperation(double first, double second) {
       return first - second;
     }
-
-    @Override
-    String getShortNameOfOperation() {
-      return "sub";
-    }
-
-    @Override
-    String getSymbolOfOperation() {
-      return "-";
-    }
   },
-  MULTIPLICATION {
+  MULTIPLICATION("mul", "*") {
     @Override
     double performOperation(double first, double second) {
       return first * second;
     }
-
-    @Override
-    String getShortNameOfOperation() {
-      return "mul";
-    }
-
-    @Override
-    String getSymbolOfOperation() {
-      return "*";
-    }
   },
-  DIVISION {
+  DIVISION("div", "/") {
     @Override
     double performOperation(double first, double second) {
       return first / second;
     }
-
-    @Override
-    String getShortNameOfOperation() {
-      return "div";
-    }
-
-    @Override
-    String getSymbolOfOperation() {
-      return "/";
-    }
   };
+
+  private final String mShortNameOfOperation;
+  private final String mSymbolOfOperation;
+
+  BinOpKind(String shortNameOfOperation, String symbolOfOperation) {
+    mShortNameOfOperation = shortNameOfOperation;
+    mSymbolOfOperation = symbolOfOperation;
+  }
 
   double performOperation(double first, double second) {
     return 0;
   }
 
   String getShortNameOfOperation() {
-    return null;
+    return mShortNameOfOperation;
   }
 
   String getSymbolOfOperation() {
-    return null;
+    return mSymbolOfOperation;
   }
 }

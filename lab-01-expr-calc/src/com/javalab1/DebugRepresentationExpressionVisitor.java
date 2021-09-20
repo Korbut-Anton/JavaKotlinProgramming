@@ -9,25 +9,22 @@ public class DebugRepresentationExpressionVisitor implements ExpressionVisitor {
 
   @Override
   public Object visitBinaryExpression(BinaryExpression expr) {
-    return new StringBuilder(expr.getOperation().getShortNameOfOperation()).append("(").
-            append(expr.getLeft().accept(this)).append(",").
-            append(expr.getRight().accept(this)).append(")");
+    return expr.getOperation().getShortNameOfOperation() + "(" + expr.getLeft().accept(this) + ","
+            + expr.getRight().accept(this) + ")";
   }
 
   @Override
   public Object visitLiteral(Literal expr) {
-    return new StringBuilder("'").append(expr.getValue()).append("'");
+    return "'" + expr.getValue() + "'";
   }
 
   @Override
   public Object visitParenthesis(ParenthesisExpression expr) {
-    return new StringBuilder(expr.hasMinus() ? "-" : "").append("paren-expr(").
-            append(expr.getExpr().accept(this)).append(")");
+    return (expr.hasMinus() ? "-" : "") + "paren-expr(" + expr.getExpr().accept(this) + ")";
   }
 
   @Override
   public Object visitVariable(Variable expr) {
-    return new StringBuilder(expr.hasMinus() ? "-" : "").append("var[").append(expr.getName()).
-            append("]");
+    return (expr.hasMinus() ? "-" : "") + "var[" + expr.getName() + "]";
   }
 }
