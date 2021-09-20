@@ -1,29 +1,29 @@
 package com.javalab1;
 
-public class ToStringExpressionVisitor implements ExpressionVisitor {
+public class ToStringExpressionVisitor implements ExpressionVisitor<String> {
   private ToStringExpressionVisitor() {
   }
 
   public static final ToStringExpressionVisitor INSTANCE = new ToStringExpressionVisitor();
 
   @Override
-  public Object visitBinaryExpression(BinaryExpression expr) {
-    return expr.getLeft().accept(this).toString() + expr.getOperation().getSymbolOfOperation() +
+  public String visitBinaryExpression(BinaryExpression expr) {
+    return expr.getLeft().accept(this) + expr.getOperation().getSymbolOfOperation() +
             expr.getRight().accept(this);
   }
 
   @Override
-  public Object visitLiteral(Literal expr) {
+  public String visitLiteral(Literal expr) {
     return String.valueOf(expr.getValue());
   }
 
   @Override
-  public Object visitParenthesis(ParenthesisExpression expr) {
+  public String visitParenthesis(ParenthesisExpression expr) {
     return (expr.hasMinus() ? "-" : "") + "(" + expr.getExpr().accept(this) + ")";
   }
 
   @Override
-  public Object visitVariable(Variable expr) {
+  public String visitVariable(Variable expr) {
     return (expr.hasMinus() ? "-" : "") + expr.getName();
   }
 }

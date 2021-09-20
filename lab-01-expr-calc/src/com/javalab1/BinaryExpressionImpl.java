@@ -15,7 +15,7 @@ public class BinaryExpressionImpl extends BaseExpression implements BinaryExpres
   }
 
   @Override
-  public Object accept(ExpressionVisitor visitor) {
+  public <T> T accept(ExpressionVisitor<T> visitor) {
     return visitor.visitBinaryExpression(this);
   }
 

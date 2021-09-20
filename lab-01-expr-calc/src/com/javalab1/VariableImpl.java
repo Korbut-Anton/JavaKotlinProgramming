@@ -21,7 +21,7 @@ public class VariableImpl extends BaseExpression implements Variable {
   }
 
   @Override
-  public Object accept(ExpressionVisitor visitor) {
+  public <T> T accept(ExpressionVisitor<T> visitor) {
     return visitor.visitVariable(this);
   }
 

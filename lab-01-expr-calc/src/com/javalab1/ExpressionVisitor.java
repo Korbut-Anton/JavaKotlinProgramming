@@ -1,11 +1,11 @@
 package com.javalab1;
 
-public interface ExpressionVisitor {
-  Object visitBinaryExpression(BinaryExpression expr);
+public interface ExpressionVisitor<T> {
+  T visitBinaryExpression(BinaryExpression expr);
 
-  Object visitLiteral(Literal expr);
+  T visitLiteral(Literal expr);
 
-  Object visitParenthesis(ParenthesisExpression expr);
+  T visitParenthesis(ParenthesisExpression expr);
 
-  Object visitVariable(Variable expr);
+  T visitVariable(Variable expr);
 }

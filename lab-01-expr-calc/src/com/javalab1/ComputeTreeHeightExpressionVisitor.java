@@ -1,6 +1,6 @@
 package com.javalab1;
 
-public class ComputeTreeHeightExpressionVisitor implements ExpressionVisitor {
+public class ComputeTreeHeightExpressionVisitor implements ExpressionVisitor<Integer> {
   private ComputeTreeHeightExpressionVisitor() {
   }
 
@@ -8,23 +8,23 @@ public class ComputeTreeHeightExpressionVisitor implements ExpressionVisitor {
           new ComputeTreeHeightExpressionVisitor();
 
   @Override
-  public Object visitBinaryExpression(BinaryExpression expr) {
-    return Math.max((int) expr.getRight().accept(this),
-            (int) expr.getLeft().accept(this)) + 1;
+  public Integer visitBinaryExpression(BinaryExpression expr) {
+    return Math.max(expr.getRight().accept(this),
+            expr.getLeft().accept(this)) + 1;
   }
 
   @Override
-  public Object visitLiteral(Literal expr) {
+  public Integer visitLiteral(Literal expr) {
     return 1;
   }
 
   @Override
-  public Object visitParenthesis(ParenthesisExpression expr) {
-    return (int) expr.getExpr().accept(this) + 1;
+  public Integer visitParenthesis(ParenthesisExpression expr) {
+    return expr.getExpr().accept(this) + 1;
   }
 
   @Override
-  public Object visitVariable(Variable expr) {
+  public Integer visitVariable(Variable expr) {
     return 1;
   }
 }

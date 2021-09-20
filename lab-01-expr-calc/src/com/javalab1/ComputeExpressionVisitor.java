@@ -2,7 +2,7 @@ package com.javalab1;
 
 import java.util.HashMap;
 
-public class ComputeExpressionVisitor implements ExpressionVisitor {
+public class ComputeExpressionVisitor implements ExpressionVisitor<Double> {
   private final HashMap<String, Double> mVariablesInfo;
 
   ComputeExpressionVisitor(HashMap<String, Double> variablesInfo) {
@@ -10,26 +10,26 @@ public class ComputeExpressionVisitor implements ExpressionVisitor {
   }
 
   @Override
-  public Object visitBinaryExpression(BinaryExpression expr) {
-    return expr.getOperation().performOperation((double) expr.getLeft().accept(this),
-            (double) expr.getRight().accept(this));
+  public Double visitBinaryExpression(BinaryExpression expr) {
+    return expr.getOperation().performOperation(expr.getLeft().accept(this),
+            expr.getRight().accept(this));
   }
 
   @Override
-  public Object visitLiteral(Literal expr) {
+  public Double visitLiteral(Literal expr) {
     return expr.getValue();
   }
 
   @Override
-  public Object visitParenthesis(ParenthesisExpression expr) {
+  public Double visitParenthesis(ParenthesisExpression expr) {
     if (expr.hasMinus()) {
-      return -(double) expr.getExpr().accept(this);
+      return -expr.getExpr().accept(this);
     }
     return expr.getExpr().accept(this);
   }
 
   @Override
-  public Object visitVariable(Variable expr) {
+  public Double visitVariable(Variable expr) {
     return expr.hasMinus() ? -mVariablesInfo.get(String.valueOf(expr.getName())) :
             mVariablesInfo.get(String.valueOf(expr.getName()));
   }

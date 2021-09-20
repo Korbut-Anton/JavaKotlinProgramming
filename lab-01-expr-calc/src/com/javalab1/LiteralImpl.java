@@ -14,7 +14,7 @@ public class LiteralImpl extends BaseExpression implements Literal {
   }
 
   @Override
-  public Object accept(ExpressionVisitor visitor) {
+  public <T> T accept(ExpressionVisitor<T> visitor) {
     return visitor.visitLiteral(this);
   }
 

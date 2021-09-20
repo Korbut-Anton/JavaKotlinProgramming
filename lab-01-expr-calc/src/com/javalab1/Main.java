@@ -14,7 +14,7 @@ public class Main {
     System.out.println(expression.accept(DebugRepresentationExpressionVisitor.INSTANCE));
     System.out.print("Depth of tree: ");
     System.out.println(expression.accept(ComputeTreeHeightExpressionVisitor.INSTANCE));
-    HashMap<String, Double> mapForVariables = (HashMap<String, Double>)
+    HashMap<String, Double> mapForVariables =
             expression.accept(new SetValuesForVariablesExpressionVisitor());
     System.out.print("Result: ");
     System.out.print(String.format("%8.7f", expression.

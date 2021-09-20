@@ -1,6 +1,6 @@
 package com.javalab1;
 
-public class DebugRepresentationExpressionVisitor implements ExpressionVisitor {
+public class DebugRepresentationExpressionVisitor implements ExpressionVisitor<String> {
   private DebugRepresentationExpressionVisitor() {
   }
 
@@ -8,23 +8,23 @@ public class DebugRepresentationExpressionVisitor implements ExpressionVisitor {
           new DebugRepresentationExpressionVisitor();
 
   @Override
-  public Object visitBinaryExpression(BinaryExpression expr) {
+  public String visitBinaryExpression(BinaryExpression expr) {
     return expr.getOperation().getShortNameOfOperation() + "(" + expr.getLeft().accept(this) + ","
             + expr.getRight().accept(this) + ")";
   }
 
   @Override
-  public Object visitLiteral(Literal expr) {
+  public String visitLiteral(Literal expr) {
     return "'" + expr.getValue() + "'";
   }
 
   @Override
-  public Object visitParenthesis(ParenthesisExpression expr) {
+  public String visitParenthesis(ParenthesisExpression expr) {
     return (expr.hasMinus() ? "-" : "") + "paren-expr(" + expr.getExpr().accept(this) + ")";
   }
 
   @Override
-  public Object visitVariable(Variable expr) {
+  public String visitVariable(Variable expr) {
     return (expr.hasMinus() ? "-" : "") + "var[" + expr.getName() + "]";
   }
 }

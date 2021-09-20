@@ -9,7 +9,7 @@ public class ParenthesisExpressionImpl extends BaseExpression implements Parenth
   }
 
   @Override
-  public Object accept(ExpressionVisitor visitor) {
+  public <T> T accept(ExpressionVisitor<T> visitor) {
     return visitor.visitParenthesis(this);
   }
 
