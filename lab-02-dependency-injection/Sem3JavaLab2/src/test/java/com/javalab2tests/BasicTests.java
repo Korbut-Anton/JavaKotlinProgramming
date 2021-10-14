@@ -27,13 +27,13 @@ public class BasicTests {
     di.register(Class3.class);
     di.register(Class1.class);
     di.completeRegistration();
-    Class1 firstClass1 = (Class1) di.resolve(Class1.class);
-    Class1 secondClass1 = (Class1) di.resolve(Class1.class);
-    Class2 firstClass2 = (Class2) di.resolve(Class2.class);
-    Class2 secondClass2 = (Class2) di.resolve(Class2.class);
-    Class2 thirdClass2 = (Class2) di.resolve(Class2.class);
-    Class3 firstClass3 = (Class3) di.resolve(Class3.class);
-    Class3 secondClass3 = (Class3) di.resolve(Class3.class);
+    Class1 firstClass1 = di.resolve(Class1.class);
+    Class1 secondClass1 = di.resolve(Class1.class);
+    Class2 firstClass2 = di.resolve(Class2.class);
+    Class2 secondClass2 = di.resolve(Class2.class);
+    Class2 thirdClass2 = di.resolve(Class2.class);
+    Class3 firstClass3 = di.resolve(Class3.class);
+    Class3 secondClass3 = di.resolve(Class3.class);
     assertNotSame(firstClass1, secondClass1);
     assertNotSame(firstClass2, secondClass2);
     assertNotSame(firstClass2, thirdClass2);
@@ -47,8 +47,8 @@ public class BasicTests {
     DI di = new DI();
     di.register(SingleClass.class);
     di.completeRegistration();
-    SingleClass firstSingleClass = (SingleClass) di.resolve(SingleClass.class);
-    SingleClass secondSingleClass = (SingleClass) di.resolve(SingleClass.class);
+    SingleClass firstSingleClass = di.resolve(SingleClass.class);
+    SingleClass secondSingleClass = di.resolve(SingleClass.class);
     assertNotSame(firstSingleClass, secondSingleClass);
   }
 
@@ -61,16 +61,14 @@ public class BasicTests {
     di.register(Dependence1.class);
     di.register(DependentOnTwoClass.class);
     di.completeRegistration();
-    Dependence1 firstDependence1 = (Dependence1) di.resolve(Dependence1.class);
-    DependentOnTwoClass firstDependentOnTwoClass = (DependentOnTwoClass)
-            di.resolve(DependentOnTwoClass.class);
-    BaseClass firstBaseClass = (BaseClass) di.resolve(BaseClass.class);
-    Dependence2 firstDependence2 = (Dependence2) di.resolve(Dependence2.class);
-    Dependence1 secondDependence1 = (Dependence1) di.resolve(Dependence1.class);
-    Dependence2 secondDependence2 = (Dependence2) di.resolve(Dependence2.class);
-    DependentOnTwoClass secondDependentOnTwoClass = (DependentOnTwoClass)
-            di.resolve(DependentOnTwoClass.class);
-    BaseClass secondBaseClass = (BaseClass) di.resolve(BaseClass.class);
+    Dependence1 firstDependence1 = di.resolve(Dependence1.class);
+    DependentOnTwoClass firstDependentOnTwoClass = di.resolve(DependentOnTwoClass.class);
+    BaseClass firstBaseClass = di.resolve(BaseClass.class);
+    Dependence2 firstDependence2 = di.resolve(Dependence2.class);
+    Dependence1 secondDependence1 = di.resolve(Dependence1.class);
+    Dependence2 secondDependence2 = di.resolve(Dependence2.class);
+    DependentOnTwoClass secondDependentOnTwoClass = di.resolve(DependentOnTwoClass.class);
+    BaseClass secondBaseClass = di.resolve(BaseClass.class);
     assertNotSame(firstDependence1, secondDependence1);
     assertNotSame(firstDependence2, secondDependence2);
     assertNotSame(firstBaseClass, secondBaseClass);
@@ -97,14 +95,14 @@ public class BasicTests {
     di.register(C3.class);
     di.register(D1.class);
     di.completeRegistration();
-    B2 b2 = (B2) di.resolve(B2.class);
-    B4 b4 = (B4) di.resolve(B4.class);
-    A firstA = (A) di.resolve(A.class);
-    C2 c2 = (C2) di.resolve(C2.class);
-    A secondA = (A) di.resolve(A.class);
-    D1 firstD1 = (D1) di.resolve(D1.class);
-    C1 c1 = (C1) di.resolve(C1.class);
-    D1 secondD1 = (D1) di.resolve(D1.class);
+    B2 b2 = di.resolve(B2.class);
+    B4 b4 = di.resolve(B4.class);
+    A firstA = di.resolve(A.class);
+    C2 c2 = di.resolve(C2.class);
+    A secondA = di.resolve(A.class);
+    D1 firstD1 = di.resolve(D1.class);
+    C1 c1 = di.resolve(C1.class);
+    D1 secondD1 = di.resolve(D1.class);
     assertNotSame(firstA, secondA);
     assertNotSame(firstD1, secondD1);
   }
@@ -120,8 +118,8 @@ public class BasicTests {
     di.register(X.class);
     di.register(TwiceUsedDependence.class);
     di.completeRegistration();
-    X firstX = (X) di.resolve(X.class);
-    X secondX = (X) di.resolve(X.class);
+    X firstX = di.resolve(X.class);
+    X secondX = di.resolve(X.class);
     assertNotSame(firstX, secondX);
     assertNotSame(firstX.GetDeDependentOnTUD1(), secondX.GetDeDependentOnTUD1());
     assertNotSame(firstX.GetDeDependentOnTUD2(), secondX.GetDeDependentOnTUD2());
@@ -131,13 +129,11 @@ public class BasicTests {
             firstX.GetDeDependentOnTUD2().GetTwiceUsedDependence());
     assertNotSame(firstX.GetDeDependentOnTUD1().GetTwiceUsedDependence().GetDependenceOfTUD(),
             firstX.GetDeDependentOnTUD2().GetTwiceUsedDependence().GetDependenceOfTUD());
-    Z z = (Z) di.resolve(Z.class);
-    DependentOnTUD2 dependentOnTUD2 = (DependentOnTUD2) di.resolve(DependentOnTUD2.class);
-    DependentOnTUD1 dependentOnTUD1 = (DependentOnTUD1) di.resolve(DependentOnTUD1.class);
-    TwiceUsedDependence firstTwiceUsedDependence = (TwiceUsedDependence)
-            di.resolve(TwiceUsedDependence.class);
-    TwiceUsedDependence secondTwiceUsedDependence = (TwiceUsedDependence)
-            di.resolve(TwiceUsedDependence.class);
+    Z z = di.resolve(Z.class);
+    DependentOnTUD2 dependentOnTUD2 = di.resolve(DependentOnTUD2.class);
+    DependentOnTUD1 dependentOnTUD1 = di.resolve(DependentOnTUD1.class);
+    TwiceUsedDependence firstTwiceUsedDependence = di.resolve(TwiceUsedDependence.class);
+    TwiceUsedDependence secondTwiceUsedDependence = di.resolve(TwiceUsedDependence.class);
     assertNotSame(firstTwiceUsedDependence, secondTwiceUsedDependence);
     assertNotSame(firstTwiceUsedDependence.GetDependenceOfTUD(),
             secondTwiceUsedDependence.GetDependenceOfTUD());
@@ -154,23 +150,15 @@ public class BasicTests {
     di.register(DependenceFromTriple2.class);
     di.register(DependenceFromPair.class);
     di.completeRegistration();
-    SeparatedSingleClass firstSeparatedSingleClass = (SeparatedSingleClass)
-            di.resolve(SeparatedSingleClass.class);
-    SeparatedSingleClass secondSeparatedSingleClass2 = (SeparatedSingleClass)
-            di.resolve(SeparatedSingleClass.class);
+    SeparatedSingleClass firstSeparatedSingleClass = di.resolve(SeparatedSingleClass.class);
+    SeparatedSingleClass secondSeparatedSingleClass2 = di.resolve(SeparatedSingleClass.class);
     assertNotSame(firstSeparatedSingleClass, secondSeparatedSingleClass2);
-    DependenceFromTriple1 dependenceFromTriple1 = (DependenceFromTriple1)
-            di.resolve(DependenceFromTriple1.class);
-    DependentFromTriple dependentFromTriple = (DependentFromTriple)
-            di.resolve(DependentFromTriple.class);
-    DependenceFromTriple2 dependenceFromTriple2 = (DependenceFromTriple2)
-            di.resolve(DependenceFromTriple2.class);
-    DependentFromPair firstDependentFromPair = (DependentFromPair)
-            di.resolve(DependentFromPair.class);
-    DependenceFromPair dependenceFromPair = (DependenceFromPair)
-            di.resolve(DependenceFromPair.class);
-    DependentFromPair secondDependentFromPair = (DependentFromPair)
-            di.resolve(DependentFromPair.class);
+    DependenceFromTriple1 dependenceFromTriple1 = di.resolve(DependenceFromTriple1.class);
+    DependentFromTriple dependentFromTriple = di.resolve(DependentFromTriple.class);
+    DependenceFromTriple2 dependenceFromTriple2 = di.resolve(DependenceFromTriple2.class);
+    DependentFromPair firstDependentFromPair = di.resolve(DependentFromPair.class);
+    DependenceFromPair dependenceFromPair = di.resolve(DependenceFromPair.class);
+    DependentFromPair secondDependentFromPair = di.resolve(DependentFromPair.class);
     assertNotSame(firstDependentFromPair, secondDependentFromPair);
   }
 
@@ -184,26 +172,23 @@ public class BasicTests {
     di.register(OuterClass.class);
     di.register(OuterClass.MiddleClass.InnerClass.class);
     di.completeRegistration();
-    OuterClass.MiddleClass.InnerClass firstInnerClass = (OuterClass.MiddleClass.InnerClass)
+    OuterClass.MiddleClass.InnerClass firstInnerClass =
             di.resolve(OuterClass.MiddleClass.InnerClass.class);
-    OuterClass.MiddleClass.InnerClass secondInnerClass = (OuterClass.MiddleClass.InnerClass)
+    OuterClass.MiddleClass.InnerClass secondInnerClass =
             di.resolve(OuterClass.MiddleClass.InnerClass.class);
     assertNotSame(firstInnerClass, secondInnerClass);
-    OuterClass firstOuterClass = (OuterClass) di.resolve(OuterClass.class);
-    OuterClass secondOuterClass = (OuterClass) di.resolve(OuterClass.class);
+    OuterClass firstOuterClass = di.resolve(OuterClass.class);
+    OuterClass secondOuterClass = di.resolve(OuterClass.class);
     assertNotSame(firstOuterClass, secondOuterClass);
-    OuterClass.MiddleClass firstMiddleClass = (OuterClass.MiddleClass)
-            di.resolve(OuterClass.MiddleClass.class);
-    OuterClass.MiddleClass secondMiddleClass = (OuterClass.MiddleClass)
-            di.resolve(OuterClass.MiddleClass.class);
+    OuterClass.MiddleClass firstMiddleClass = di.resolve(OuterClass.MiddleClass.class);
+    OuterClass.MiddleClass secondMiddleClass = di.resolve(OuterClass.MiddleClass.class);
     assertNotSame(firstMiddleClass, secondMiddleClass);
-    DependenceOfMiddleClass firstDependenceOfMiddleClass = (DependenceOfMiddleClass)
+    DependenceOfMiddleClass firstDependenceOfMiddleClass =
             di.resolve(DependenceOfMiddleClass.class);
-    DependenceOfMiddleClass secondDependenceOfMiddleClass = (DependenceOfMiddleClass)
+    DependenceOfMiddleClass secondDependenceOfMiddleClass =
             di.resolve(DependenceOfMiddleClass.class);
     assertNotSame(firstDependenceOfMiddleClass, secondDependenceOfMiddleClass);
-    DependenceOfInnerClass dependenceOfInnerClass = (DependenceOfInnerClass)
-            di.resolve(DependenceOfInnerClass.class);
+    DependenceOfInnerClass dependenceOfInnerClass = di.resolve(DependenceOfInnerClass.class);
   }
 
   @Test
@@ -215,28 +200,25 @@ public class BasicTests {
     di.register(BaseDependence1Interface.class, BaseDependence1Impl.class);
     di.register(BaseInterface.class, BaseImpl.class);
     di.completeRegistration();
-    AnotherDependenceImpl firstAnotherDependenceImpl = (AnotherDependenceImpl)
-            di.resolve(AnotherDependenceImpl.class);
-    AnotherDependenceImpl secondAnotherDependenceImpl = (AnotherDependenceImpl)
+    AnotherDependenceImpl firstAnotherDependenceImpl = di.resolve(AnotherDependenceImpl.class);
+    AnotherDependenceInterface secondAnotherDependenceImpl =
             di.resolve(AnotherDependenceInterface.class);
-    AnotherDependenceImpl thirdAnotherDependenceImpl = (AnotherDependenceImpl)
-            di.resolve(AnotherDependenceImpl.class);
+    AnotherDependenceImpl thirdAnotherDependenceImpl = di.resolve(AnotherDependenceImpl.class);
     assertNotSame(firstAnotherDependenceImpl, secondAnotherDependenceImpl);
     assertNotSame(firstAnotherDependenceImpl, thirdAnotherDependenceImpl);
     assertNotSame(secondAnotherDependenceImpl, thirdAnotherDependenceImpl);
-    BaseImpl firstBaseImpl = (BaseImpl) di.resolve(BaseInterface.class);
-    BaseImpl secondBaseImpl = (BaseImpl) di.resolve(BaseInterface.class);
-    BaseImpl thirdBaseImpl = (BaseImpl) di.resolve(BaseImpl.class);
+    BaseInterface firstBaseImpl = di.resolve(BaseInterface.class);
+    BaseInterface secondBaseImpl = di.resolve(BaseInterface.class);
+    BaseImpl thirdBaseImpl = di.resolve(BaseImpl.class);
     assertNotSame(firstBaseImpl, secondBaseImpl);
     assertNotSame(firstBaseImpl, thirdBaseImpl);
     assertNotSame(secondBaseImpl, thirdBaseImpl);
-    BaseDependence1Impl firstBaseDependence1Impl = (BaseDependence1Impl)
-            di.resolve(BaseDependence1Impl.class);
-    BaseDependence1Impl secondBaseDependence1Impl = (BaseDependence1Impl)
+    BaseDependence1Impl firstBaseDependence1Impl = di.resolve(BaseDependence1Impl.class);
+    BaseDependence1Interface secondBaseDependence1Impl =
             di.resolve(BaseDependence1Interface.class);
     assertNotSame(firstBaseDependence1Impl, secondBaseDependence1Impl);
-    BaseDependence2 firstBaseDependence2 = (BaseDependence2) di.resolve(BaseDependence2.class);
-    BaseDependence2 secondBaseDependence2 = (BaseDependence2) di.resolve(BaseDependence2.class);
+    BaseDependence2 firstBaseDependence2 = di.resolve(BaseDependence2.class);
+    BaseDependence2 secondBaseDependence2 = di.resolve(BaseDependence2.class);
     assertNotSame(firstBaseDependence2, secondBaseDependence2);
   }
 
@@ -251,22 +233,19 @@ public class BasicTests {
     di.register(BetweenSingletons1.class);
     di.completeRegistration();
     di.resolve(BetweenSingletons1.class);
-    BetweenSingletons1 firstBetweenSingletons1 = (BetweenSingletons1)
-            di.resolve(BetweenSingletons1.class);
-    BetweenSingletons2 betweenSingletons2 = (BetweenSingletons2)
-            di.resolve(BetweenSingletons2.class);
-    BetweenSingletons1 secondBetweenSingletons1 = (BetweenSingletons1)
-            di.resolve(BetweenSingletons1.class);
-    Singleton2 singleton2 = (Singleton2) di.resolve(Singleton2.class);
+    BetweenSingletons1 firstBetweenSingletons1 = di.resolve(BetweenSingletons1.class);
+    BetweenSingletons2 betweenSingletons2 = di.resolve(BetweenSingletons2.class);
+    BetweenSingletons1 secondBetweenSingletons1 = di.resolve(BetweenSingletons1.class);
+    Singleton2 singleton2 = di.resolve(Singleton2.class);
     assertNotSame(firstBetweenSingletons1, secondBetweenSingletons1);
     assertSame(firstBetweenSingletons1.GetSingleton(), singleton2);
     assertSame(secondBetweenSingletons1.GetSingleton(), singleton2);
     assertSame(betweenSingletons2.GetSingleton(), singleton2);
-    Singleton1Impl firstSingleton1 = (Singleton1Impl) di.resolve(Singleton1Impl.class);
+    Singleton1Impl firstSingleton1 = di.resolve(Singleton1Impl.class);
     Singleton1Impl secondSingleton1 = (Singleton1Impl) di.resolve(Singleton1Interface.class);
     assertSame(firstSingleton1.GetSecondDependence().GetSingleton(), singleton2);
     assertSame(secondSingleton1.GetFirstDependence().GetSingleton(), singleton2);
     assertSame(firstSingleton1, secondSingleton1);
-    Base base = (Base) di.resolve(Base.class);
+    Base base = di.resolve(Base.class);
   }
 }

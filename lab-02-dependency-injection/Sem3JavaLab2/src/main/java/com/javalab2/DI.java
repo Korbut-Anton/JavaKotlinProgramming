@@ -67,19 +67,19 @@ public class DI {
     }
   }
 
-  public Object resolve(Class<?> inputClass) throws InvocationTargetException,
+  public <T> T resolve(Class<T> inputClass) throws InvocationTargetException,
           InstantiationException, IllegalAccessException, ClassCreationException {
     if (!mMapWithClassesAndConstructors.containsKey(inputClass) &&
             !mMapForInterfaces.containsKey(inputClass)) {
       throw new ClassCreationException("Can not resolve class, which is not registered");
     }
     if (inputClass.isInterface()) {
-      return resolve(mMapForInterfaces.get(inputClass));
+      return inputClass.cast(resolve(mMapForInterfaces.get(inputClass)));
     }
     if (inputClass.getAnnotation(Singleton.class) != null) {
       Object temp = mMapForSingletonObjects.get(inputClass);
       if (temp != null) {
-        return temp;
+        return inputClass.cast(temp);
       }
     }
     Constructor<?> injectConstructor = mMapWithClassesAndConstructors.get(inputClass);
@@ -92,7 +92,7 @@ public class DI {
     if (inputClass.getAnnotation(Singleton.class) != null) {
       mMapForSingletonObjects.put(inputClass, newClass);
     }
-    return newClass;
+    return inputClass.cast(newClass);
   }
 
   private final HashMap<Class<?>, Class<?>> mMapForInterfaces = new HashMap<>();
